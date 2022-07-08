@@ -1,5 +1,5 @@
 # Virtual Shell
-
+See "proof_of_concept" screenshot for working example
 # Program Description and Overview
 
 In this project, I created my own virtual shell to run locally within my machine. The shell takes user input as arguments, and runs commands whether they are internal commands (handled by code locally on our side) or external commands (executable files ran by linux). Redirection is also utilized in this project, as we let our user change what is used for stdin, stdout, or both. This includes piping (using output from one command as input for another) and backround processes (letting more commands run before the first one finishes).
