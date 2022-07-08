@@ -1,0 +1,88 @@
+Benjamin Rittenhouse - "myshell" README_DOC
+
+Welcome to the user manual for the virtual shell. Below you will find a description of how to run the shell, using batch input files, running commands, and navigating the shell. 
+
+1. Running the shell
+	a. User Input
+		- To run the shell, you can simply type "make" in the command line. This will compile and run "myshell.c", which is the file that has the while loop to run the shell.
+
+		- You may also type "gcc -o myshell myshell.c", and then "./myshell" to run the shell as well (this does the same as the makefile)
+
+	b. Batch Input
+		- To run the shell using a batch file, create / edit a file named "batch.txt" and enter commands line by line into the file that you would like to be read
+		- Compile the file by typing "gcc -o myshell myshell.c", and then "./myshell batch.txt"
+		- This second arg will run all the functions in the batch file and then exit the shell
+
+
+2. Using the shell when runnning (user input)
+	- To exit the shell, simply type "exit"
+
+	a. Internal Commands
+		- Internal commands are handled with C methods that are called based on the command that you type. Here is a list of all internal commands, included in "internal.c":
+			a.  cd <directory> - Change the current default directory to  
+			<directory>. If the <directory> argument is not present, report 
+			the current directory. If the directory does not exist an 
+			appropriate error should be reported. This command should also 
+			change the PWD environment variable.  
+
+			b.  clr - Clear the screen. 
+
+			c.  dir <directory> - List the contents of directory <directory>. 
+
+			d.  environ - List all the environment strings. 
+
+			e.  echo <comment> - Display  <comment> on the display followed by a 
+			new line (multiple spaces/tabs may be reduced to a single space). 
+
+			f.  help - Display the user manual using the more filter.  
+
+			g.  pause - Pause operation of the shell until 'Enter' is pressed. 
+
+			h.  quit - Quit the shell. 
+
+
+		- These internal commands do not take any flags
+
+	b. External Commands
+		- External commands, handled by finding the file executable and running it based on the args entered, are the other commands this shell is capable of. You can find a list of the commands in the Linux manual, as any of these commands work in the virtual shell.
+
+		- These commands take flags. Examples would be "ls -a"
+
+
+3. I/O Redirection 
+
+	a. > ... Output Redirection
+
+		- Output redirection is used to change where the output of a command is going. This is handled when we see the ">" character in your input. The first side of the > is the command and any flags, and the second side is where we would like this to output.
+
+		- For example, if we type "ls > ls.txt", this will output whatever ls was going to output into a file called ls.txt, instead of stdout.
+
+	b. < ... Input Redirection
+
+		- Input redirection is similar to output redirection, except it is changing stdin, or the input that will be used for the command. For example, if we typed "cat < batch.txt", it would print out the items in batch.txt
+
+
+	c. >> ... Output Redirection (Append)
+
+		- Output redirection with a single > simply creates a file for ouptut and writes the output. The >> command is a little more complex, as it allows us to first check if the file exists. If it does, append the output to the file without overwriting what is in the file (> would overwrite it). If it does not, perform what > does (create file, write contents)
+
+		- Ex. would be, we have a file named batch.txt, and we want to add the output of ls. We could type... "ls >> batch.txt"
+
+	d. | ... Piping
+
+		- Piping allows the user to use the output of one command for the INPUT of another. This modifies the file descriptors of both stdin and stdout. We take the output of the first command and directly run the second command with whatever was outputted from the first.
+
+		- For example, if we type "ls | wc", this would take the items that were outputted from ls, and use that as the text that will be counted in the "wc" command.
+
+	e. & ... background process
+
+		- The background process, typed at the end of our command, allows us to run multiple processes at once. This stops the original forking and executing of a single child process, such as when we call "sleep 5", from waiting, and lets us run other processes in the meantime.
+
+		- For example, if we type "sleep 5 &", this will sleep for 5 seconds, but allow us to type other commands, like "ls" while it is sleeping and get output.
+
+
+4. Program Environment
+
+	a. The program gets the current working directory and uses that as the directory. We place the files in a folder called "myshell" and can execute from there.
+
+	b. If we change directories out of the file, internal and external commands will both still work. This is because the internal commands are handled in our own code, and the external commands are found in exe files at a higher folder no matter where our current directory is at the moment.
